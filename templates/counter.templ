@@ -1,0 +1,13 @@
+package templates
+
+import "strconv"
+
+templ Counter(number int) {
+<article id="main-acticle" hx-swap-oob="true">
+if number < 1 {
+    <button hx-get="/counter/click" class="uk-button uk-button-primary" hx-swap="none">Click me!!!</button>
+}else{
+    <button hx-get="/counter/click" class="uk-button uk-button-primary" hx-swap="none">You clicked { strconv.Itoa(number) } times</button>
+}
+</article>
+}

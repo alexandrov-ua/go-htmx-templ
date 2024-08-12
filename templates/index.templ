@@ -1,0 +1,104 @@
+package templates
+
+templ Index(page string) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>CSS Template</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.17.11/dist/css/uikit.min.css" />
+<script src="https://unpkg.com/htmx.org@2.0.1"></script>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+nav {
+  float: left;
+  width: 30%;
+  height: 300px; /* only for demonstration, should be removed */
+  background: #ccc;
+  padding: 20px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+article {
+  float: left;
+  padding: 20px;
+  width: 70%;
+  background-color: #f1f1f1;
+}
+
+section::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+footer {
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+</style>
+<script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", (event) => {
+document.body.addEventListener('htmx:beforeSwap', function(evt) {
+    if (evt.detail.xhr.status === 422) {
+            console.log("setting status to paint");
+        evt.detail.shouldSwap = true;
+        evt.detail.isError = false;
+    }
+});
+        });
+</script>
+</head>
+<body>
+
+<header class="uk-tile uk-tile-primary">
+  <h2>My site</h2>
+</header>
+
+<section>
+  <nav>
+    <ul class="uk-list uk-link-toggle">
+      <li><a hx-get="/hello?name=london" hx-swap="none" hx-push-url="true">Hello</a></li>
+      <li><a hx-get="/counter" hx-swap="none" hx-push-url="true">Counter</a></li>
+      <li><a hx-get="/todo" hx-swap="none" hx-push-url="true">TODO</a></li>
+      <li><a hx-get="/scroll" hx-swap="none" hx-push-url="true">scroll</a></li>
+    </ul>
+  </nav>
+  <main>
+    <article id="main-acticle" hx-get={ page } hx-swap="OuterHTML" hx-trigger="load"></article>
+  </main>
+</section>
+
+<footer>
+  <p>Footer</p>
+</footer>
+
+</body>
+</html>
+}

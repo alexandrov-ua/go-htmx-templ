@@ -1,0 +1,73 @@
+package templates
+
+templ Todo(model TodoContext) {
+<article id="main-acticle" hx-swap-oob="true">
+<div id="cont-id">
+    <form hx-post="/todo" hx-target="#todo-tbody" hx-swap="afterend" id="my_form"></form>
+<table class="uk-table uk-table-divider uk-margin-left uk-margin-right" id="todo-table">
+    <colgroup>
+        <col>
+        <col>
+        <col style="width: 300px;">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="todo-tbody">
+
+        @TodoForm(nil, "")
+        for _, item := range model.Todos {
+            @TodoItem(item)
+        }
+    </tbody>
+</table>
+</div>
+</article>
+}
+
+templ TodoForm(item *TodoModel, err string){
+    if item == nil {
+        <tr id="todo-input" hx-swap-oob="true">
+            <td>
+                <input class="uk-input" name="Title" type="text" form="my_form" autofocus>
+            </td>
+            <td>
+                <input class="uk-input" name="Description" type="text" form="my_form">
+            </td>
+            <td>
+                <button type="submit" class="uk-button uk-button-primary" form="my_form">Add TODO</button>
+            </td>
+        </tr>
+    }else{
+        <tr id="todo-input" hx-swap-oob="true">
+            <td>
+                <input class="uk-input" name="Title" type="text" form="my_form" value={item.Title}>
+                { err }
+            </td>
+            <td>
+                <input class="uk-input" name="Description" type="text" form="my_form" value={item.Description}>
+            </td>
+            <td>
+                <button type="submit" class="uk-button uk-button-primary" form="my_form">Add TODO</button>
+            </td>
+        </tr>
+    }
+}
+
+templ TodoItem(item TodoModel) {
+        <tr id={"item-" + item.Title } hx-delete={"/todo/" + item.Title } hx-swap="outerHTML" hx-target="closest .item" class="item">
+            <td>
+                { item.Title }
+            </td>
+            <td>
+                { item.Description }
+            </td>
+            <td>
+                <button hx-delete="/todo" class="uk-button uk-button-danger">Delete</button>
+            </td>
+        </tr>
+}
